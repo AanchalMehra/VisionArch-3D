@@ -21,10 +21,7 @@ def allowed_file(filename):
 @app.route("/")
 def home():
     return jsonify({"message": "VisionArch backend running"})
-    
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "ok"})
+
 
 @app.route("/upload", methods=["POST"])
 def upload():
