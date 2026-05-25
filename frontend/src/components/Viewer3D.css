@@ -9,6 +9,7 @@
 .viewer-container canvas {
   width: 100% !important;
   height: 100% !important;
+  display: block;
 }
 
 /* Empty state */
@@ -23,6 +24,7 @@
   pointer-events: none;
   text-align: center;
   gap: 12px;
+  padding: 20px;
 }
 
 .empty-icon {
@@ -41,6 +43,7 @@
   font-size: 14px;
   color: #1e293b;
   max-width: 300px;
+  line-height: 1.5;
 }
 
 .empty-steps {
@@ -87,6 +90,51 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  z-index: 20;
 }
 
-.hud-icon { font-size: 14px; }
+.hud-icon {
+  font-size: 14px;
+}
+
+
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+  .viewer-container {
+    width: 100%;
+    height: 58vh;
+    min-height: 58vh;
+  }
+
+  .viewer-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    touch-action: none;
+  }
+
+  .empty-icon {
+    font-size: 40px;
+  }
+
+  .empty-title {
+    font-size: 22px;
+  }
+
+  .empty-sub {
+    font-size: 13px;
+    max-width: 260px;
+  }
+
+  .empty-step {
+    font-size: 12px;
+  }
+
+  .hud {
+    bottom: 10px;
+    right: 10px;
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+}

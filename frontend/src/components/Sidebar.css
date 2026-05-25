@@ -1,4 +1,5 @@
 /* Sidebar.css */
+
 .sidebar {
   width: 260px;
   min-width: 260px;
@@ -129,16 +130,26 @@
   transition: opacity 0.2s;
 }
 
-.generate-btn:hover:not(:disabled) { opacity: 0.9; }
-.generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.generate-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.generate-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 .spin {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .status-badge {
@@ -152,8 +163,15 @@
   gap: 6px;
 }
 
-.status-badge.ok  { background: rgba(16,185,129,0.1); color: #10b981; }
-.status-badge.err { background: rgba(239,68,68,0.1);  color: #ef4444; }
+.status-badge.ok {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.status-badge.err {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
 
 /* Stats */
 .stats-list {
@@ -210,7 +228,9 @@
   transition: background 0.2s;
 }
 
-.toggle-switch.on { background: #6366f1; }
+.toggle-switch.on {
+  background: #6366f1;
+}
 
 .toggle-thumb {
   position: absolute;
@@ -223,7 +243,9 @@
   transition: transform 0.2s;
 }
 
-.toggle-switch.on .toggle-thumb { transform: translateX(14px); }
+.toggle-switch.on .toggle-thumb {
+  transform: translateX(14px);
+}
 
 /* Footer */
 .sidebar-footer {
@@ -232,4 +254,66 @@
   font-size: 10px;
   color: #334155;
   text-align: center;
+}
+
+/* ========================= */
+/* MOBILE RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 42vh;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+  }
+
+  .sidebar-header {
+    padding: 10px 14px;
+  }
+
+  .sidebar-scroll {
+    overflow-y: auto;
+    padding-bottom: 20px;
+  }
+
+  .sidebar-section {
+    padding: 12px 14px;
+  }
+
+  .upload-zone {
+    min-height: 180px;
+  }
+
+  .preview-img {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+  }
+
+  .generate-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .toggle-label,
+  .stat-row {
+    font-size: 14px;
+  }
+
+  .section-label {
+    font-size: 10px;
+  }
+
+  .logo-row h1 {
+    font-size: 16px;
+  }
+
+  .logo-row p {
+    font-size: 12px;
+  }
 }
