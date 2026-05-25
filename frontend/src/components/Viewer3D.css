@@ -1,140 +1,53 @@
 .viewer-container {
-  flex: 1;
-  height: 100vh;
-  position: relative;
-  background: #0a0e1a;
-  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 320px; /* Leaving room for desktop sidebar */
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #0f172a;
 }
 
-.viewer-container canvas {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
+/* When sidebar is hidden/closed on desktop */
+.viewer-container.full {
+  left: 0;
 }
 
-/* Empty state */
-.empty-state {
+/* Open Panel Float Button */
+.open-sidebar-btn {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-  pointer-events: none;
-  text-align: center;
-  gap: 12px;
-  padding: 20px;
+  top: 1rem;
+  left: 1rem;
+  z-index: 30;
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.2s;
 }
 
-.empty-icon {
-  font-size: 52px;
-  opacity: 0.4;
+.open-sidebar-btn:hover {
+  background-color: #0369a1;
 }
 
-.empty-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #334155;
-  letter-spacing: -0.02em;
-}
-
-.empty-sub {
-  font-size: 14px;
-  color: #1e293b;
-  max-width: 300px;
-  line-height: 1.5;
-}
-
-.empty-steps {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.empty-step {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: #1e293b;
-}
-
-.empty-step span {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #1e293b;
-  color: #4b5563;
-  font-size: 11px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* HUD */
-.hud {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  background: rgba(10, 14, 26, 0.75);
-  backdrop-filter: blur(8px);
-  border: 1px solid #1e293b;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 11px;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  z-index: 20;
-}
-
-.hud-icon {
-  font-size: 14px;
-}
-
-
-
-/* MOBILE RESPONSIVE */
+/* Mobile responsive adjustments */
 @media (max-width: 768px) {
-
   .viewer-container {
-    width: 100%;
-    height: 58vh;
-    min-height: 58vh;
+    left: 0; /* WebGL Canvas uses full screen on mobile devices */
   }
-
-  .viewer-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    touch-action: none;
-  }
-
-  .empty-icon {
-    font-size: 40px;
-  }
-
-  .empty-title {
-    font-size: 22px;
-  }
-
-  .empty-sub {
-    font-size: 13px;
-    max-width: 260px;
-  }
-
-  .empty-step {
-    font-size: 12px;
-  }
-
-  .hud {
-    bottom: 10px;
-    right: 10px;
-    padding: 6px 10px;
-    font-size: 10px;
+  
+  .open-sidebar-btn {
+    top: auto;
+    bottom: 1.5rem; /* Moves button to bottom for easier thumb reach on mobile viewports */
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 3rem);
+    text-align: center;
+    padding: 0.875rem;
   }
 }

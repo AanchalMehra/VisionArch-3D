@@ -7,70 +7,75 @@ export default function App() {
   const [floorData, setFloorData] = useState(null)
   const [status, setStatus] = useState({ msg: '', type: '' })
   const [isLoading, setIsLoading] = useState(false)
-
-  const [showDoors, setShowDoors] = useState(true)
-  const [showWindows, setShowWindows] = useState(true)
   const [showRoof, setShowRoof] = useState(false)
- 
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   async function handleUpload(file) {
-  if (!file) return
+    if (!file) return
 
-  setIsLoading(true)
-  setFloorData(null)
-  setStatus({ msg: '', type: '' })
+    setIsLoading(true)
+    setFloorData(null)
+    setStatus({ msg: '', type: '' })
 
-  const formData = new FormData()
-  formData.append('file', file)
+    const formData = new FormData()
+    formData.append('file', file)
 
-  const API_URL = import.meta.env.VITE_API_URL
+    const API_URL = import.meta.env.VITE_API_URL
 
-  try {
-    const res = await fetch(`${API_URL}/upload`, {
-      method: 'POST',
-      body: formData
-    })
-    if (!res.ok) {
-      throw new Error('Upload failed')
+    try {
+      const res = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || data.error) {
+        setStatus({ msg: data.error || 'Upload failed', type: 'error' }) // standardizing 'error' type for your css
+      } else {
+        setFloorData(data)
+        setStatus({ msg: '3D model ready!', type: 'success' }) // standardizing 'success' type for your css
+
+        // auto close sidebar on successful architecture parsing
+        setSidebarOpen(false)
+      }
+    } catch (err) {
+      setStatus({ msg: 'Cannot reach Flask server.', type: 'error' })
     }
 
-    const data = await res.json()
-
-    if (data.error) {
-      setStatus({ msg: data.error, type: 'err' })
-    } else {
-      setFloorData(data)
-      setStatus({ msg: '3D model ready!', type: 'ok' })
-    }
-  } catch (err) {
-    setStatus({ msg: 'Cannot reach Flask server.', type: 'err' })
+    setIsLoading(false)
   }
-
-  setIsLoading(false)
-}
 
   return (
     <div className="app-layout">
-       {isLoading&&(
+
+      {isLoading && (
         <div className="loading-overlay">
-         <div className="loading-spinner" />
+          <div className="loading-spinner" />
         </div>
-       )}
+      )}
+
+      {/* Kept un-nested from conditional block so CSS transform slide transitions work */}
       <Sidebar
         onUpload={handleUpload}
         status={status}
         isLoading={isLoading}
         floorData={floorData}
-        showDoors={showDoors}     setShowDoors={setShowDoors}
-        showWindows={showWindows} setShowWindows={setShowWindows}
-        showRoof={showRoof}       setShowRoof={setShowRoof}
-      />
-      <Viewer3D
-        floorData={floorData}
-        showDoors={showDoors}
-        showWindows={showWindows}
         showRoof={showRoof}
+        setShowRoof={setShowRoof}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
       />
+
+      <div className="viewer-wrapper">
+        <Viewer3D
+          floorData={floorData}
+          showRoof={showRoof}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
+      </div>
+
     </div>
   )
 }

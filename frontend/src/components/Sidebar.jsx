@@ -1,6 +1,5 @@
-// Sidebar.jsx
-import { useState, useRef } from 'react'
-import { Upload, Zap, Loader2, CheckCircle, XCircle, Eye, DoorOpen, AppWindow, Home } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Upload, Loader2, Home } from 'lucide-react'
 import './Sidebar.css'
 
 function Toggle({ label, icon, checked, onChange }) {
@@ -10,7 +9,10 @@ function Toggle({ label, icon, checked, onChange }) {
         {icon}
         <span className="toggle-label">{label}</span>
       </div>
-      <div className={`toggle-switch ${checked ? 'on' : ''}`} onClick={() => onChange(!checked)}>
+      <div
+        className={`toggle-switch ${checked ? 'on' : ''}`}
+        onClick={() => onChange(!checked)}
+      >
         <div className="toggle-thumb" />
       </div>
     </div>
@@ -18,10 +20,14 @@ function Toggle({ label, icon, checked, onChange }) {
 }
 
 export default function Sidebar({
-  onUpload, status, isLoading, floorData,
-  showDoors, setShowDoors,
-  showWindows, setShowWindows,
-  showRoof, setShowRoof,
+  onUpload,
+  status,
+  isLoading,
+  floorData,
+  showRoof,
+  setShowRoof,
+  sidebarOpen,
+  setSidebarOpen
 }) {
   const [selectedFile, setSelectedFile] = useState(null)
   const [preview, setPreview] = useState(null)
@@ -44,19 +50,46 @@ export default function Sidebar({
     setPreview(URL.createObjectURL(file))
   }
 
+  function handleGenerate() {
+    if (!selectedFile) return
+    // Fire off backend api handling pipeline
+    onUpload(selectedFile)
+    // Keep preview state completely active here so it persists!
+  }
+
+  // Clean up object URL memory leak ONLY on component destroying unmount lifecycle
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview)
+    }
+  }, [])
+
   const stats = floorData?.stats
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
       <div className="sidebar-header">
-            <h2>VisionArch 3D</h2>
-          </div>
-     
-      <div className="sidebar-scroll">
+        <h2>VisionArch 3D</h2>
+        <button
+          className="sidebar-close-btn"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close sidebar"
+        >
+          ✕
+        </button>
+      </div>
 
+      <div className="sidebar-scroll">
         <section className="sidebar-section">
           <p className="section-label">Floor Plan</p>
-          <input ref={inputRef} type="file" accept="image/*" onChange={handleFileChange} hidden />
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            hidden
+          />
+
           <div
             className={`upload-zone ${dragging ? 'dragging' : ''} ${preview ? 'has-preview' : ''}`}
             onClick={() => inputRef.current.click()}
@@ -74,20 +107,27 @@ export default function Sidebar({
               </div>
             )}
           </div>
-          {selectedFile && <p className="file-name">{selectedFile.name}</p>}
+
+          {selectedFile && (
+            <p className="file-name">{selectedFile.name}</p>
+          )}
         </section>
 
         <section className="sidebar-section">
           <button
             className="generate-btn"
-            onClick={() => onUpload(selectedFile)}
+            onClick={handleGenerate}
             disabled={!selectedFile || isLoading}
           >
-            {isLoading
-              ? <><Loader2 size={15} className="spin" /> Analysing…</>
-              : <> Generate 3D Image</>
-            }
+            {isLoading ? (
+              <>
+                <Loader2 size={15} className="spin" /> Analysing…
+              </>
+            ) : (
+              <>Generate 3D Image</>
+            )}
           </button>
+
           {status.msg && (
             <div className={`status-badge ${status.type}`}>
               {status.msg}
@@ -99,9 +139,15 @@ export default function Sidebar({
           <section className="sidebar-section">
             <p className="section-label">Results</p>
             <div className="stats-list">
-              <div className="stat-row"><span>Walls</span><span>{stats.walls}</span></div>
-              <div className="stat-row"><span>Doors</span><span>{stats.doors}</span></div>
-              <div className="stat-row"><span>Windows</span><span>{stats.windows}</span></div>
+              <div className="stat-row">
+                <span>Walls</span><span>{stats.walls}</span>
+              </div>
+              <div className="stat-row">
+                <span>Doors</span><span>{stats.doors}</span>
+              </div>
+              <div className="stat-row">
+                <span>Windows</span><span>{stats.windows}</span>
+              </div>
             </div>
           </section>
         )}
@@ -110,15 +156,16 @@ export default function Sidebar({
           <section className="sidebar-section">
             <p className="section-label">Visibility</p>
             <div className="toggles">
-    
-              <Toggle label="Roof"   icon={<Home size={14} />}       checked={showRoof}    onChange={setShowRoof} />
+              <Toggle
+                label="Roof"
+                icon={<Home size={14} />}
+                checked={showRoof}
+                onChange={setShowRoof}
+              />
             </div>
           </section>
         )}
-
       </div>
-
-  
     </aside>
   )
 }

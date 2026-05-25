@@ -1,142 +1,151 @@
-/* Sidebar.css */
-
+/* Base Layout & Desktop Sidebar Defaults */
 .sidebar {
-  width: 260px;
-  min-width: 260px;
-  height: 100vh;
-  background: #0d1117;
-  border-right: 1px solid #1e293b;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 320px;
+  background-color: #1e293b; /* Slate 800 */
+  color: #f8fafc;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  z-index: 50;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
 }
 
+.sidebar.closed {
+  transform: translateX(-100%);
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Header */
 .sidebar-header {
-  padding: 8px;
-  border-bottom: 1px solid #1e293b;
-}
-
-.logo-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  padding: 1.25rem;
+  border-bottom: 1px solid #334155;
 }
 
-.logo-row h1 {
-  font-size: 14px;
-  font-weight: 700;
-  color: #e2e8f0;
+.sidebar-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
 }
 
-.logo-row p {
-  font-size: 11px;
-  color: #6366f1;
-  margin-top: 1px;
+.sidebar-close-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s;
 }
 
+.sidebar-close-btn:hover {
+  color: #ffffff;
+}
+
+/* Scroll Body */
 .sidebar-scroll {
   flex: 1;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #1e293b transparent;
+  padding: 1.25rem;
 }
 
 .sidebar-section {
-  padding: 14px 16px;
-  border-bottom: 1px solid #111827;
+  margin-bottom: 1.75rem;
 }
 
 .section-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #475569;
-  margin-bottom: 10px;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
 }
 
-/* Upload */
+/* Upload Dropzone */
 .upload-zone {
-  border: 1px dashed #1e293b;
-  border-radius: 8px;
+  border: 2px dashed #475569;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
   cursor: pointer;
-  min-height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s;
+  background-color: #0f172a;
+  transition: all 0.2s ease;
 }
 
-.upload-zone:hover,
-.upload-zone.dragging {
-  border-color: #6366f1;
-}
-
-.upload-zone.has-preview {
-  border-style: solid;
-  min-height: unset;
+.upload-zone.dragging, .upload-zone:hover {
+  border-color: #38bdf8;
+  background-color: #1e293b;
 }
 
 .upload-placeholder {
-  text-align: center;
-  padding: 20px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 0.5rem;
 }
 
 .upload-text {
-  font-size: 12px;
-  color: #64748b;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  margin: 0;
 }
 
 .upload-sub {
-  font-size: 11px;
-  color: #334155;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0;
 }
 
 .preview-img {
   width: 100%;
-  max-height: 180px;
+  max-height: 160px;
   object-fit: contain;
-  display: block;
+  border-radius: 0.25rem;
 }
 
 .file-name {
-  margin-top: 6px;
-  font-size: 11px;
-  color: #475569;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.75rem;
+  color: #38bdf8;
+  margin-top: 0.5rem;
+  word-break: break-all;
 }
 
-/* Button */
+/* Buttons and Badges */
 .generate-btn {
   width: 100%;
-  padding: 10px;
-  border-radius: 7px;
-  border: none;
-  background: #6366f1;
+  padding: 0.75rem;
+  background-color: #0284c7;
   color: white;
-  font-size: 13px;
+  border: none;
+  border-radius: 0.375rem;
   font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  transition: opacity 0.2s;
-}
-
-.generate-btn:hover:not(:disabled) {
-  opacity: 0.9;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
 }
 
 .generate-btn:disabled {
-  opacity: 0.4;
+  background-color: #334155;
+  color: #64748b;
   cursor: not-allowed;
+}
+
+.generate-btn:not(:disabled):hover {
+  background-color: #0369a1;
 }
 
 .spin {
@@ -144,176 +153,102 @@
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .status-badge {
-  margin-top: 8px;
-  padding: 7px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
 }
+.status-badge.success { background: #14532d; color: #4ade80; }
+.status-badge.error { background: #7f1d1d; color: #f87171; }
 
-.status-badge.ok {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-
-.status-badge.err {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-}
-
-/* Stats */
+/* Stats List */
 .stats-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  background: #0f172a;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .stat-row {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  color: #94a3b8;
-  padding: 2px 0;
+  padding: 0.625rem 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #1e293b;
 }
+.stat-row:last-child { border-bottom: none; }
+.stat-row span:last-child { font-weight: 600; color: #38bdf8; }
 
-.stat-row span:last-child {
-  color: #e2e8f0;
-  font-weight: 600;
-}
-
-/* Toggles */
+/* Toggles Layout */
 .toggles {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .toggle-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #0f172a;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
 }
 
 .toggle-left {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #94a3b8;
+  gap: 0.75rem;
+  color: #cbd5e1;
 }
 
 .toggle-label {
-  font-size: 13px;
-  color: #94a3b8;
+  font-size: 0.875rem;
 }
 
 .toggle-switch {
-  width: 32px;
-  height: 18px;
-  background: #1e293b;
-  border-radius: 9px;
-  position: relative;
+  width: 40px;
+  height: 22px;
+  background-color: #334155;
+  border-radius: 999px;
+  padding: 2px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
 }
 
 .toggle-switch.on {
-  background: #6366f1;
+  background-color: #22c55e;
 }
 
 .toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
+  background-color: white;
   border-radius: 50%;
-  background: white;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
 
 .toggle-switch.on .toggle-thumb {
-  transform: translateX(14px);
+  transform: translateX(18px);
 }
 
-/* Footer */
-.sidebar-footer {
-  padding: 12px 16px;
-  border-top: 1px solid #1e293b;
-  font-size: 10px;
-  color: #334155;
-  text-align: center;
-}
-
-/* ========================= */
-/* MOBILE RESPONSIVE */
-/* ========================= */
-
+/* Mobile Fullscreen Override */
 @media (max-width: 768px) {
-
   .sidebar {
-    width: 100%;
-    min-width: 100%;
-    height: auto;
-    max-height: 42vh;
-    border-right: none;
-    border-bottom: 1px solid #1e293b;
+    width: 100vw;
+    height: 100vh;
+    height: -webkit-fill-available; /* Fixed mobile viewport jumping issues */
+    max-width: 100%;
+    border-radius: 0;
   }
-
-  .sidebar-header {
-    padding: 10px 14px;
-  }
-
-  .sidebar-scroll {
-    overflow-y: auto;
-    padding-bottom: 20px;
-  }
-
-  .sidebar-section {
-    padding: 12px 14px;
-  }
-
-  .upload-zone {
-    min-height: 180px;
-  }
-
-  .preview-img {
-    width: 100%;
-    max-height: 240px;
-    object-fit: contain;
-  }
-
-  .generate-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .toggle-label,
-  .stat-row {
-    font-size: 14px;
-  }
-
-  .section-label {
-    font-size: 10px;
-  }
-
-  .logo-row h1 {
-    font-size: 16px;
-  }
-
-  .logo-row p {
-    font-size: 12px;
+  
+  .toggle-row, .generate-btn {
+    min-height: 48px; /* Slightly larger targets for full-screen application touch layout */
   }
 }
